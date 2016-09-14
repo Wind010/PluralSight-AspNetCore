@@ -10,7 +10,8 @@
     "Microsoft.NETCore.App": {
       "version": "1.0.0",
       "type": "platform"
-    }
+    },
+    "Microsoft.Extensions.Configuration.Json": "1.0.0"
   },
 
   "tools": {

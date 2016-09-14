@@ -20,6 +20,8 @@
       "launchBrowser": true,
       "launchUrl": "http://localhost:5000",
       "environmentVariables": {
+        "Key": "Value",
+        "MailSettings__ToAddress": "TestEnv@Test.com",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }

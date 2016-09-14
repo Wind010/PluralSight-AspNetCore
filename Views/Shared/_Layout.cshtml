@@ -4,6 +4,9 @@
     <meta charset="utf-8" />
     <title>The World - @ViewBag.Title</title>
 
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootswatch/yeti/bootstrap.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
 </head>
@@ -12,7 +15,7 @@
     <div id="sidebar">
         <img src="~/images/ac.jpg" alt="logo" class="headshot" />
         <span id="username">User</span>
-        <ul class="menu">
+        <ul class="nav">
             <li class="active"><a asp-controller="App" asp-action="Index">Home</a></li>
             <li><a asp-controller="App" asp-action="About">About</a></li>
             <li><a asp-controller="App" asp-action="Contact">Contact</a></li>
@@ -23,7 +26,7 @@
         <div id="main">
 
             <div>
-                <button id="sidebarToggle">Toggle Menu</button>
+                <button id="sidebarToggle" class="btn btn-primary"><i class="fa fa-angle-left"></i></button>
             </div>
 
             @RenderBody()
@@ -32,15 +35,14 @@
 
 
     <div id="footer">
-        &copy; Jeff Tong Ltd.
+        <p class="text-primary">&copy; Jeff Solutions Ltd.</p>
     </div>
 
     <script type="text/javascript" src="~/lib/jQuery/dist/jquery.min.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/site.js" asp-append-version="true" ></script>
+    <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/site.js" ></script>
 
     @RenderSection("scripts", false)
-
-    <script type="text/javascript" src="~/js/site.js"></script>
 
 </body>
 </html>

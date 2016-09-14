@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TheWorld.Controllers.Web
 {
+    using Microsoft.Extensions.Configuration;
     using Services;
     using ViewModels;
 
     public class AppController : Controller
     {
         private IMailService _mailService;
+        private IConfigurationRoot _config;
 
-        public AppController(IMailService mailService)
+        public AppController(IMailService mailService, IConfigurationRoot config)
         {
             _mailService = mailService;
+            _config = config;
         }
 
         public IActionResult Index()
@@ -32,7 +35,20 @@ namespace TheWorld.Controllers.Web
         [HttpPost]
         public IActionResult Contact(ContactViewModel model)
         {
-            _mailService.SendMail(model.Name, model.Email, "Contact", model.Message);
+            if (model.Email.Contains("aol.com"))
+            {
+                ModelState.AddModelError("", "We don't support AOL addresses.  Get out of here with that noise.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                
+                _mailService.SendMail(_config["MailSettings:ToAddress"], model.Email, "Contact", model.Message);
+                ModelState.Clear();
+
+                ViewBag.UserMessage = "Message Sent!";
+            }
+
             return View();
         }
 
