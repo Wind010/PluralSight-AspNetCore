@@ -16,19 +16,26 @@
         <div>@ViewBag.UserMessage</div>
     }
 
-    <label asp-for="Name"></label>
-    <input asp-for="Name" />
-    <span asp-validation-for="Name"></span>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-muted"></span>
+    </div>
 
-    <label asp-for="Email"></label>
-    <input type="email" asp-for="Email" />
-    <span asp-validation-for="Email"></span>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input type="email" asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-muted"></span>
+    </div>
 
-    <label asp-for="Message"></label>
-    <textarea cols="40" rows="4" asp-for="Message"></textarea>
-    <span asp-validation-for="Message"></span>
+    <div class="form-group">
+        <label asp-for="Message"></label>
+        <textarea cols="40" rows="4" asp-for="Message" class="form-control"></textarea>
+        <span asp-validation-for="Message" class="text-muted"></span>
+    </div>
 
     <div>
-        <input type="submit" value="Send Message" />
+        <a asp-controller="App" asp-action="Index" class="btn btn-default">Cancel</a>
+        <input type="submit" value="Send Message" class="btn btn-success"/>
     </div>
 </form>
