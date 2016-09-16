@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace TheWorld
 {
+    using Models;
     using Services;
 
 
@@ -37,6 +38,8 @@ namespace TheWorld
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // This method is the dependency injection layer.
+
             services.AddSingleton(_config);
 
             //_env.IsEnviornment("WhateverServer")
@@ -49,16 +52,26 @@ namespace TheWorld
             else
             {
                 //TODO:  Implement a real mail service.
-
             }
 
+            services.AddDbContext<WorldContext>();
+
+            // This is Scoped because the initialization could be costly.
+            // We could also add a mock repository here for testing.
+            services.AddScoped<IWorldRepository, WorldRepository>();
+
+            // Transient because this data gets created everytime we need it.
+            services.AddTransient<WorldContextSeedData>();
+
+            services.AddLogging();
 
             // Dependency injection and thus we need to add MVC.
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
+            ILoggerFactory loggerFactory, WorldContextSeedData seeder, ILoggerFactory logFactory)
         {
             loggerFactory.AddConsole();
 
@@ -69,6 +82,11 @@ namespace TheWorld
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                logFactory.AddDebug(LogLevel.Information);
+            }
+            else
+            {
+                logFactory.AddDebug(LogLevel.Error);
             }
 
             app.UseStaticFiles();
@@ -81,6 +99,9 @@ namespace TheWorld
                     defaults: new { controller = "App", action = "Index" }
                     );
             });
+
+            // Force synchronous call with Wait();
+            seeder.EnsureSeedData().Wait();
 
             //if (env.IsDevelopment())
             //{
