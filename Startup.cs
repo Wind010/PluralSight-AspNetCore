@@ -15,6 +15,7 @@ namespace TheWorld
     using Models;
     using Services;
 
+    using Newtonsoft.Json.Serialization;
 
     public class Startup
     {
@@ -66,7 +67,10 @@ namespace TheWorld
             services.AddLogging();
 
             // Dependency injection and thus we need to add MVC.
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(config =>
+            {
+                config.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            };
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -199,6 +199,7 @@
 --resource:"C:\Git\PluralSight\TheWorld\obj\Debug\netcoreapp1.0\TheWorlddotnet-compile.deps.json",TheWorld.deps.json
 C:\Git\PluralSight\TheWorld\Program.cs
 C:\Git\PluralSight\TheWorld\Startup.cs
+C:\Git\PluralSight\TheWorld\Controllers\API\TripsController.cs
 C:\Git\PluralSight\TheWorld\Controllers\Web\AppController.cs
 C:\Git\PluralSight\TheWorld\Migrations\20160916220007_InitialDatabase.cs
 C:\Git\PluralSight\TheWorld\Migrations\20160916220007_InitialDatabase.Designer.cs
