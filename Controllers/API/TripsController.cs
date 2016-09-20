@@ -8,35 +8,58 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TheWorld.Controllers.API
 {
+    using AutoMapper;
+    using Microsoft.Extensions.Logging;
     using Models;
     using ViewModels;
 
     [Route("api/trips")]
     public class TripsController : Controller
     {
+        private ILogger<TripsController> _logger;
         private IWorldRepository _repository;
 
-        public TripsController(IWorldRepository repository)
+        public TripsController(IWorldRepository repository, ILogger<TripsController> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_repository.GetAllTrips());
+            try
+            {
+                var results = _repository.GetAllTrips();
+
+                return Ok(Mapper.Map<IEnumerable<TripViewModels>>(results));
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Failed to get all trips: {ex}");
+
+                return BadRequest("Error Occured");
+            }
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] TripViewModels trip)
+        public async Task<IActionResult> Post([FromBody] TripViewModels trip)
         {
             if (ModelState.IsValid)
             {
-                return Created($"api/trips/{trip.Name}", trip);
+                var newTrip = Mapper.Map<Trip>(trip);
+
+                _repository.AddTrip(newTrip);
+
+                if (await _repository.SaveChangesAsync())
+                {
+                    // Returning the TripViewModel and not the entity itself (Trip) for security/encapsulation.
+                    return Created($"api/trips/{trip.Name}", Mapper.Map<TripViewModels>(newTrip));
+                }
             }
 
             // Returning just the ModelState is helpful for debugging in internal services.
-            return BadRequest(ModelState);
+            return BadRequest("Failed to save the trip.");
         }
 
     }

@@ -16,6 +16,8 @@ namespace TheWorld
     using Services;
 
     using Newtonsoft.Json.Serialization;
+    using AutoMapper;
+    using ViewModels;
 
     public class Startup
     {
@@ -70,7 +72,7 @@ namespace TheWorld
             services.AddMvc().AddJsonOptions(config =>
             {
                 config.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,6 +94,14 @@ namespace TheWorld
             {
                 logFactory.AddDebug(LogLevel.Error);
             }
+
+
+            Mapper.Initialize(config =>
+            {
+                // We create a map from TripViewModels to Trip and Trip to TripViewModels with ReverseMap call.
+                // Will also create mappings for collections of these types.
+                config.CreateMap<TripViewModels, Trip>().ReverseMap();
+            });
 
             app.UseStaticFiles();
 
