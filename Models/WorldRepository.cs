@@ -19,6 +19,19 @@ namespace TheWorld.Models
             _logger = logger;
         }
 
+        public void AddStop(string tripName, Stop newStop)
+        {
+            var trip = GetTripByName(tripName);
+
+            if (trip != null)
+            {
+                // Need to add the object to trip.Stops then 
+                // add the stop to create the relationship.
+                trip.Stops.Add(newStop);
+                _context.Stops.Add(newStop);
+            }
+        }
+
         public void AddTrip(Trip trip)
         {
             _context.Add(trip);
@@ -31,7 +44,7 @@ namespace TheWorld.Models
             return _context.Trips.ToList();
         }
 
-        public Trip GetTripName(string tripName)
+        public Trip GetTripByName(string tripName)
         {
             return _context.Trips
                 .Include(t => t.Stops)
