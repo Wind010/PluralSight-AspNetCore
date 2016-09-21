@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,14 @@ namespace TheWorld.Models
             _logger.LogInformation("Getting all trips from the database.");
 
             return _context.Trips.ToList();
+        }
+
+        public Trip GetTripName(string tripName)
+        {
+            return _context.Trips
+                .Include(t => t.Stops)
+                .Where(t => string.Equals(t.Name, tripName, StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault();
         }
 
         public async Task<bool> SaveChangesAsync()

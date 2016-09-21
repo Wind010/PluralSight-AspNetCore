@@ -101,6 +101,7 @@ namespace TheWorld
                 // We create a map from TripViewModels to Trip and Trip to TripViewModels with ReverseMap call.
                 // Will also create mappings for collections of these types.
                 config.CreateMap<TripViewModels, Trip>().ReverseMap();
+                config.CreateMap<StopViewModel, Stop>().ReverseMap();
             });
 
             app.UseStaticFiles();
