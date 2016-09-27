@@ -63,6 +63,9 @@ namespace TheWorld
             // We could also add a mock repository here for testing.
             services.AddScoped<IWorldRepository, WorldRepository>();
 
+            // Transient since it is stateless.
+            services.AddTransient<GeoCoordsService>();
+
             // Transient because this data gets created everytime we need it.
             services.AddTransient<WorldContextSeedData>();
 

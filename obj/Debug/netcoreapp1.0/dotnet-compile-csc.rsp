@@ -210,6 +210,8 @@
 "C:\Git\PluralSight\TheWorld\Models\WorldContextSeedData.cs"
 "C:\Git\PluralSight\TheWorld\Models\WorldRepository.cs"
 "C:\Git\PluralSight\TheWorld\Services\DebugMailService.cs"
+"C:\Git\PluralSight\TheWorld\Services\GeoCoordsResults.cs"
+"C:\Git\PluralSight\TheWorld\Services\GeoCoordsService.cs"
 "C:\Git\PluralSight\TheWorld\Services\IMailService.cs"
 "C:\Git\PluralSight\TheWorld\ViewModels\ContactViewModel.cs"
 "C:\Git\PluralSight\TheWorld\ViewModels\StopViewModel.cs"
