@@ -18,6 +18,7 @@ namespace TheWorld
     using Newtonsoft.Json.Serialization;
     using AutoMapper;
     using ViewModels;
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
     public class Startup
     {
@@ -37,8 +38,11 @@ namespace TheWorld
         }
 
 
+        /// <summary>
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
+        /// </summary>
+        /// <param name="services"><see cref="IServiceCollection"/> </param>
         public void ConfigureServices(IServiceCollection services)
         {
             // This method is the dependency injection layer.
@@ -63,8 +67,16 @@ namespace TheWorld
             // We could also add a mock repository here for testing.
             services.AddScoped<IWorldRepository, WorldRepository>();
 
-            // Transient because this data gets created everytime we need it.
+            // Transient because this data gets created every time we need it.
             services.AddTransient<WorldContextSeedData>();
+
+            services.AddIdentity<WorldUser, IdentityRole>(config =>
+            {
+                config.User.RequireUniqueEmail = true;
+                config.Password.RequiredLength = 8;
+                config.Cookies.ApplicationCookie.LoginPath = "/Auth/Login";
+            })
+            .AddEntityFrameworkStores<WorldContext>();
 
             services.AddLogging();
 
@@ -75,7 +87,16 @@ namespace TheWorld
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// This is where the middle-ware is applied.  Order matters.
+        /// </summary>
+        /// <param name="app"><see cref="IApplicationBuilder"/> </param>
+        /// <param name="env"><see cref="IHostingEnvironment"/></param>
+        /// <param name="loggerFactory"><see cref="ILoggerFactory"/></param>
+        /// <param name="seeder"><see cref="WorldContextSeedData"/></param>
+        /// <param name="logFactory"><see cref="ILoggerFactory"/></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
             ILoggerFactory loggerFactory, WorldContextSeedData seeder, ILoggerFactory logFactory)
         {
@@ -105,6 +126,10 @@ namespace TheWorld
 
             app.UseStaticFiles();
 
+            // Turn on use of ASP.NET Identity
+            app.UseIdentity();
+
+            // Typically one of the last items to configure.
             app.UseMvc(config =>
             {
                 config.MapRoute(
