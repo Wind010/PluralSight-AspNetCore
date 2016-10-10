@@ -19,6 +19,7 @@ namespace TheWorld
     using AutoMapper;
     using ViewModels;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+    using Microsoft.AspNetCore.Mvc;
 
     public class Startup
     {
@@ -81,7 +82,15 @@ namespace TheWorld
             services.AddLogging();
 
             // Dependency injection and thus we need to add MVC.
-            services.AddMvc().AddJsonOptions(config =>
+            services.AddMvc(config =>
+            {
+                // Machine this is hosted on should have ASPNETCORE_ENVIRONMENT=Production once released.
+                if (_env.IsProduction())
+                {
+                    config.Filters.Add(new RequireHttpsAttribute());
+                }
+            })
+            .AddJsonOptions(config =>
             {
                 config.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });

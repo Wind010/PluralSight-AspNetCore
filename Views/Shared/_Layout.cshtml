@@ -13,12 +13,20 @@
 <body>
 
     <div id="sidebar">
-        <img src="~/images/ac.jpg" alt="logo" class="headshot" />
-        <span id="username">User</span>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <img src="~/images/ac.jpg" alt="logo" class="headshot" />
+            <span id="username">@User.Identity.Name</span>
+        }
         <ul class="nav">
             <li class="active"><a asp-controller="App" asp-action="Index">Home</a></li>
             <li><a asp-controller="App" asp-action="About">About</a></li>
             <li><a asp-controller="App" asp-action="Contact">Contact</a></li>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li><a asp-controller="App" asp-action="About">Trips</a></li>
+                <li><a asp-controller="Auth" asp-action="Contact">Logout</a></li>
+            }
         </ul>
     </div>
 
@@ -60,9 +68,10 @@
 
     <script type="text/javascript" src="~/lib/jQuery/dist/jquery.min.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/site.js" ></script>
+    <script type="text/javascript" src="~/js/site.js"></script>
 
     @RenderSection("scripts", false)
 
 </body>
+
 </html>
