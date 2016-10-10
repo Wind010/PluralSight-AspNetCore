@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TheWorld.Controllers.API
 {
@@ -13,6 +14,7 @@ namespace TheWorld.Controllers.API
     using System.Threading.Tasks;
     using ViewModels;
 
+    [Authorize]
     [Route("/api/trips/{tripName}/stops")]
     public class StopsController : Controller
     {
@@ -32,7 +34,7 @@ namespace TheWorld.Controllers.API
         {
             try
             {
-                var trip = _repository.GetTripByName(tripName);
+                var trip = _repository.GetUserTripByName(tripName, User.Identity.Name);
 
                 return Ok(Mapper.Map<IEnumerable<StopViewModel>>(trip.Stops.OrderBy(s=> s.Order).ToList()));
             }
@@ -65,7 +67,7 @@ namespace TheWorld.Controllers.API
                 }
 
                 // Save to database
-                _repository.AddStop(tripName, newStop);
+                _repository.AddStop(tripName, newStop, User.Identity.Name);
                 
 
                 if (await _repository.SaveChangesAsync())

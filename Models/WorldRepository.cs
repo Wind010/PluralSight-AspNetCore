@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace TheWorld.Models
 {
@@ -18,9 +19,9 @@ namespace TheWorld.Models
             _logger = logger;
         }
 
-        public void AddStop(string tripName, Stop newStop)
+        public void AddStop(string tripName, Stop newStop, string username)
         {
-            var trip = GetTripByName(tripName);
+            var trip = GetUserTripByName(tripName, username);
 
             if (trip != null)
             {
@@ -60,6 +61,14 @@ namespace TheWorld.Models
                 .Where(t => t.UserName == name).ToList();
         }
 
+        public Trip GetUserTripByName(string tripName, string username)
+        {
+            return _context.Trips
+                .Include(t => t.Stops)
+                .Where(t => string.Equals(t.Name, tripName, StringComparison.OrdinalIgnoreCase) 
+                    && t.UserName.Equals(username, StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault();
+        }
 
         public async Task<bool> SaveChangesAsync()
         {
