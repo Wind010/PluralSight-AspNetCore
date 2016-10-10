@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TheWorld.Controllers.Web
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Models;
@@ -67,6 +68,13 @@ namespace TheWorld.Controllers.Web
             }
 
             return View();
+        }
+
+        [Authorize]
+        public IActionResult Trips()
+        {
+            var trips = _repository.GetAllTrips();
+            return View(trips);
         }
 
         public IActionResult About()
