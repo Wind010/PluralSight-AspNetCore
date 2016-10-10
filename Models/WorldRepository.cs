@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace TheWorld.Models
 {
@@ -28,6 +28,15 @@ namespace TheWorld.Models
             _logger.LogInformation("Getting all trips from the database.");
 
             return _context.Trips.ToList();
+        }
+
+        public IEnumerable<Trip> GetTripsByUsername(string name)
+        {
+            _logger.LogInformation($"Getting trips from the database for {name}");
+
+            return _context.Trips
+                .Include(t => t.Stops)
+                .Where(t => t.UserName == name).ToList();
         }
 
         public async Task<bool> SaveChangesAsync()

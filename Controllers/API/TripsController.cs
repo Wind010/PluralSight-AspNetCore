@@ -30,7 +30,7 @@ namespace TheWorld.Controllers.API
         {
             try
             {
-                var results = _repository.GetAllTrips();
+                var results = _repository.GetTripsByUsername(this.User.Identity.Name);
 
                 return Ok(Mapper.Map<IEnumerable<TripViewModels>>(results));
             }
@@ -38,7 +38,7 @@ namespace TheWorld.Controllers.API
             {
                 _logger.LogError($"Failed to get all trips: {ex}");
 
-                return BadRequest("Error Occured");
+                return BadRequest("Error Occurred");
             }
         }
 
