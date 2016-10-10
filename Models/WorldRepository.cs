@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,6 +30,14 @@ namespace TheWorld.Models
             return _context.Trips.ToList();
         }
 
+        public Trip GetTripName(string tripName)
+        {
+            return _context.Trips
+                .Include(t => t.Stops)
+                .Where(t => string.Equals(t.Name, tripName, StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault();
+        }
+        
         public IEnumerable<Trip> GetTripsByUsername(string name)
         {
             _logger.LogInformation($"Getting trips from the database for {name}");
@@ -38,6 +46,7 @@ namespace TheWorld.Models
                 .Include(t => t.Stops)
                 .Where(t => t.UserName == name).ToList();
         }
+
 
         public async Task<bool> SaveChangesAsync()
         {
