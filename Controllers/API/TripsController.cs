@@ -58,6 +58,11 @@ namespace TheWorld.Controllers.API
                 }
             }
 
+
+            // DEBUGGING: Determine why ModelState is invalid:
+            //var errors = ModelState.Values.SelectMany(v => v.Errors);
+
+
             // Returning just the ModelState is helpful for debugging in internal services.
             return BadRequest("Failed to save the trip.");
         }

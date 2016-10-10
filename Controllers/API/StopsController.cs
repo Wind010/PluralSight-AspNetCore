@@ -9,15 +9,16 @@ namespace TheWorld.Controllers.API
     using Models;
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using ViewModels;
 
     [Route("/api/trips/{tripName}/stops")]
     public class StopsController : Controller
     {
         private IWorldRepository _repository;
-        private ILogger<TripsController> _logger;
+        private ILogger<StopsController> _logger;
 
-        public StopsController(IWorldRepository repository, ILogger<TripsController> logger)
+        public StopsController(IWorldRepository repository, ILogger<StopsController> logger)
         {
             _repository = repository;
             _logger = logger;
@@ -28,7 +29,7 @@ namespace TheWorld.Controllers.API
         {
             try
             {
-                var trip = _repository.GetTripName(tripName);
+                var trip = _repository.GetTripByName(tripName);
 
                 return Ok(Mapper.Map<IEnumerable<StopViewModel>>(trip.Stops.OrderBy(s=> s.Order).ToList()));
             }
@@ -41,6 +42,29 @@ namespace TheWorld.Controllers.API
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> Post(string tripName, [FromBody] StopViewModel stop)
+        {
+            if (ModelState.IsValid)
+            {
+                var newStop = Mapper.Map<Stop>(stop);
+
+                _repository.AddStop(tripName, newStop);
+
+                if (await _repository.SaveChangesAsync())
+                {
+                    // Returning the TripViewModel and not the entity itself (Trip) for security/encapsulation.
+                    return Created($"api/trips/{tripName}/stops/{newStop.Name}", 
+                        Mapper.Map<StopViewModel>(newStop));
+                }
+            }
+
+            // DEBUGGING: Determine why ModelState is invalid:
+            //var errors = ModelState.Values.SelectMany(v => v.Errors);
+
+            // Returning just the ModelState is helpful for debugging in internal services.
+            return BadRequest("Failed to save the stop.");
+        }
 
 
     }
