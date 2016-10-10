@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
-
 
 namespace TheWorld
 {
@@ -69,7 +69,10 @@ namespace TheWorld
             // We could also add a mock repository here for testing.
             services.AddScoped<IWorldRepository, WorldRepository>();
 
-            // Transient because this data gets created every time we need it.
+            // Transient since it is stateless.
+            services.AddTransient<GeoCoordsService>();
+
+            // Transient because this data gets created everytime we need it.
             services.AddTransient<WorldContextSeedData>();
 
             services.AddIdentity<WorldUser, IdentityRole>(config =>
