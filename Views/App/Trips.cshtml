@@ -19,7 +19,7 @@
             </tr>
         </table>
 
-        <form novalidate name="newTripForm">
+        <form novalidate name="newTripForm" ng-submit"vm.addTrip()">
             <div class="form-group">
                 <label for="name">Trip Name></label>
                 <input class="form-control" type="text" id="name" name="name" ng-model="vm.newTrip.name" />
