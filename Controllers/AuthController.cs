@@ -53,7 +53,7 @@ namespace TheWorld.Controllers
         }
 
 
-        public async Task<IActionResult> Loginout(LoginViewModel vm, string returnUrl)
+        public async Task<IActionResult> Logout(LoginViewModel vm, string returnUrl)
         {
             if (User.Identity.IsAuthenticated)
             {
