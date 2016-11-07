@@ -14,7 +14,6 @@
         var vm = this;
 
         vm.trips = [];
-
         vm.newTrip = {};
 
         vm.errroMessage = "";
@@ -32,6 +31,24 @@
             vm.isBusy = false;
         });
 
+
+        vm.addTrip = function () {
+            vm.isBusy = true;
+            vm.errroMessage = "";
+
+            $http.post("/api/trips", vm.newTrip)
+            .then(function (response) {
+                // Success
+                vm.trips.push(response.data);
+                vm.newTrip = {};
+            }, function () {
+                //Failure
+                vm.errorMessage = "Failed to save new trip";
+            })
+            .finally(function () {
+                vm.isBusy = false;
+            });
+        };
     }
 
 })();
