@@ -4,7 +4,7 @@
 
     "use strict";
 
-    // Creatign the module
+    // Creating the module
     angular.module("app-trips", []);
 
 })();

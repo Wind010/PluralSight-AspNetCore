@@ -1,5 +1,6 @@
 ﻿// tripsController.js
 
+
 (function () {
     
     "use strict";
@@ -8,8 +9,8 @@
     angular.module("app-trips")
         .controller("tripsController", tripsController);
 
-    funciton tripsController() {
-        
+    function tripsController($scope) {
+
         var vm = this;
 
         vm.trips = [{
