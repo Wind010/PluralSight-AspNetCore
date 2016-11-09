@@ -24,7 +24,7 @@
                 // Success
                 angular.copy(response.data, vm.trips);
             }, function () {
-                //Failure
+                // Failure
                 vm.errorMessage = "Failed to load data: " + error;
             })
         .finally(function () {
@@ -42,7 +42,7 @@
                 vm.trips.push(response.data);
                 vm.newTrip = {};
             }, function () {
-                //Failure
+                // Failure
                 vm.errorMessage = "Failed to save new trip";
             })
             .finally(function () {
