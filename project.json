@@ -8,8 +8,8 @@
     "Microsoft.AspNetCore.Mvc": "1.0.1",
     "Microsoft.AspNetCore.Mvc.TagHelpers": "1.0.1",
     "Microsoft.NETCore.App": {
-      "version": "1.0.0",
-      "type": "platform"
+      "version": "1.0.0"//,
+      //"type": "platform"
     },
     "Microsoft.Extensions.Configuration.Json": "1.0.0",
     "Microsoft.EntityFrameworkCore":  "1.0.1",
@@ -55,6 +55,11 @@
     "configProperties": {
       "System.GC.Server": true
     }
+  },
+
+  "runtimes": {
+    "win81-x64": {},
+    "win10-x64": {}
   },
 
   "publishOptions": {
